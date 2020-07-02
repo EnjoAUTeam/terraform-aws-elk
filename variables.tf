@@ -7,3 +7,9 @@ variable "private_key" {
 variable "CIDR" {
   description = "CIDR blocks for allowed INGRESS"
 }
+variable "AMI" {
+  description = "AMI id"
+}
+variable "TYPE" {
+  description = "Instance Type"
+}

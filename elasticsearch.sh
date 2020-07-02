@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Make sure every command send output. Also make sure, that the program exits after an error.
+set -x
+
+# To get the whole user_data output, we save it to a log file under /var/log/user_data.log
+exec > >(tee /var/log/deploy.log|logger -t user-data -s 2>/dev/console) 2>&1
+
 apt update
 apt install openjdk-8-jdk -y
 

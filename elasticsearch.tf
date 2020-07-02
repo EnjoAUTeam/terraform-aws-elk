@@ -46,8 +46,8 @@ resource "aws_security_group" "allow_elk" {
 }
 
 resource "aws_instance" "elk" {
-  ami           = "ami-6e1a0117"
-  instance_type = "t2.medium"
+  ami           = var.AMI
+  instance_type = var.TYPE
   key_name      = var.key
   vpc_security_group_ids = [
     aws_security_group.allow_elk.id,
@@ -96,6 +96,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key = var.private_key
     }
   }
@@ -123,7 +124,7 @@ resource "aws_instance" "elk" {
     }
   }
 
-  depends_on = ["aws_security_group.allow_elk"]
+  depends_on = [ aws_security_group.allow_elk ]
 }
 
 resource "aws_eip" "ip" {
