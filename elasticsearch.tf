@@ -1,6 +1,6 @@
 resource "aws_security_group" "allow_elk" {
   name = "allow_elk"
-  description = "All all elasticsearch traffic"
+  description = "All elasticsearch traffic"
   #vpc_id = "${aws_vpc.main.id}"
 
   # elasticsearch port
@@ -8,7 +8,7 @@ resource "aws_security_group" "allow_elk" {
     from_port   = 9200
     to_port     = 9200
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.CIDR
   }
 
   # logstash port
@@ -16,7 +16,7 @@ resource "aws_security_group" "allow_elk" {
     from_port   = 5043
     to_port     = 5044
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.CIDR
   }
 
   # kibana ports
@@ -24,7 +24,7 @@ resource "aws_security_group" "allow_elk" {
     from_port   = 5601
     to_port     = 5601
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.CIDR
   }
 
   # ssh
@@ -32,7 +32,7 @@ resource "aws_security_group" "allow_elk" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.CIDR
   }
 
   # outbound
@@ -48,9 +48,9 @@ resource "aws_security_group" "allow_elk" {
 resource "aws_instance" "elk" {
   ami           = "ami-6e1a0117"
   instance_type = "t2.medium"
-  key_name      = "${var.key}"
+  key_name      = var.key
   vpc_security_group_ids = [
-    "${aws_security_group.allow_elk.id}",
+    aws_security_group.allow_elk.id,
   ]
 
   provisioner "file" {
@@ -60,7 +60,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key = var.private_key
     }
   }
 
@@ -71,7 +71,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key = var.private_key
     }
   }
 
@@ -82,7 +82,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key =  var.private_key
     }
   }
 
@@ -93,7 +93,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key = var.private_key
     }
   }
 
@@ -104,7 +104,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key = var.private_key
     }
   }
     
@@ -114,7 +114,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = "${var.private_key}"
+      private_key = var.private_key
     }
   }
 
@@ -122,5 +122,5 @@ resource "aws_instance" "elk" {
 }
 
 resource "aws_eip" "ip" {
-  instance = "${aws_instance.elk.id}"
+  instance = aws_instance.elk.id
 }
