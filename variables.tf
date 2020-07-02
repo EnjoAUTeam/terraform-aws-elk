@@ -13,3 +13,6 @@ variable "AMI" {
 variable "TYPE" {
   description = "Instance Type"
 }
+variable "availability_zone" {
+  description = "Availability Zone"
+}

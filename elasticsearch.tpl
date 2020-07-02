@@ -6,8 +6,38 @@ set -x
 # To get the whole user_data output, we save it to a log file under /var/log/user_data.log
 exec > >(tee /var/log/deploy.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-apt update
-apt install openjdk-8-jdk -y
+export DEBIAN_FRONTEND=noninteractive
+
+apt -y update && apt -y install software-properties-common
+add-apt-repository -y universe
+
+apt -y update
+apt install apt-transport-https unzip
+apt -y install software-properties-common tzdata curl sudo && \
+DEBIAN_FRONTEND=noninteractive && \
+echo "Australia/Perth" tee /etc/timezone && \
+dpkg-reconfigure --frontend noninteractive tzdata && \
+apt -y --allow-unauthenticated --no-install-recommends install \
+bzip2 \
+ca-certificates \
+wget \
+curl \
+joe \
+net-tools \
+git \
+mc \
+nano \
+pv \
+screen \
+inetutils-ping \
+rsync \
+s3fs \
+sendmail \
+mailtools \
+dos2unix \
+gettext-base \
+syslog-ng \
+links
 
 # install elasticsearch
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.8.0-amd64.deb
@@ -51,4 +81,6 @@ systemctl start filebeat.service
 mv /tmp/beats.conf /etc/logstash/conf.d/beats.conf
 curl -XPUT 'http://127.0.0.1:9200/_template/filebeat' -d@/etc/filebeat/filebeat.template.json
 
+hostnamectl set-hostname elk
 
+reboot

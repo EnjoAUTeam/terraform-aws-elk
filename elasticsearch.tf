@@ -49,10 +49,14 @@ resource "aws_instance" "elk" {
   ami           = var.AMI
   instance_type = var.TYPE
   key_name      = var.key
+  availability_zone = var.availability_zone
   vpc_security_group_ids = [
     aws_security_group.allow_elk.id,
   ]
-
+  user_data = data.template_file.installation_template.rendered
+  tags = {
+    Name = "Backend - Magento"
+  }
   provisioner "file" {
     content      = "network.bind_host: 0.0.0.0"
     destination   = "/tmp/elasticsearch.yml"
@@ -112,21 +116,14 @@ resource "aws_instance" "elk" {
       private_key = var.private_key
     }
   }
-    
-  provisioner "remote-exec" {
-    script        = "${path.module}/elasticsearch.sh"
-    
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host     = self.public_ip
-      private_key = var.private_key
-    }
-  }
 
   depends_on = [ aws_security_group.allow_elk ]
 }
 
 resource "aws_eip" "ip" {
   instance = aws_instance.elk.id
+}
+
+data "template_file" "installation_template" {
+  template = "${file("${path.module}/elasticsearch.tpl")}"
 }
