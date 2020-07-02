@@ -60,6 +60,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key = var.private_key
     }
   }
@@ -71,6 +72,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key = var.private_key
     }
   }
@@ -82,6 +84,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key =  var.private_key
     }
   }
@@ -104,6 +107,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key = var.private_key
     }
   }
@@ -114,6 +118,7 @@ resource "aws_instance" "elk" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
+      host     = self.public_ip
       private_key = var.private_key
     }
   }
