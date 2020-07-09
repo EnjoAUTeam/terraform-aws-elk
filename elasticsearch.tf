@@ -55,7 +55,7 @@ resource "aws_instance" "elk" {
   ]
   user_data = data.template_file.installation_template.rendered
   tags = {
-    Name = "Backend - Magento"
+    Name = var.Name
   }
   provisioner "file" {
     content      = "network.bind_host: 0.0.0.0"
