@@ -16,3 +16,6 @@ variable "TYPE" {
 variable "availability_zone" {
   description = "Availability Zone"
 }
+variable "name" {
+  description = "Name as set in AWS "
+}
