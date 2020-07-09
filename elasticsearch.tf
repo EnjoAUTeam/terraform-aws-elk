@@ -55,7 +55,7 @@ resource "aws_instance" "elk" {
   ]
   user_data = data.template_file.installation_template.rendered
   tags = {
-    Name = var.Name
+    Name = var.name
   }
   provisioner "file" {
     content      = "network.bind_host: 0.0.0.0"
