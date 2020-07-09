@@ -58,7 +58,7 @@ resource "aws_instance" "elk" {
     Name = var.name
   }
   provisioner "file" {
-    content      = "network.bind_host: 0.0.0.0"
+    source      = "elasticsearch.yml"
     destination   = "/tmp/elasticsearch.yml"
 
     connection {
