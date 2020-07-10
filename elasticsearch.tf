@@ -53,12 +53,12 @@ resource "aws_instance" "elk" {
   vpc_security_group_ids = [
     aws_security_group.allow_elk.id,
   ]
-  user_data = data.template_file.installation_template.rendered
+  user_data = var.installation_template
   tags = {
     Name = var.name
   }
   provisioner "file" {
-    source      = "elasticsearch.yml"
+    content        = var.es_template
     destination   = "/tmp/elasticsearch.yml"
 
     connection {
@@ -70,7 +70,7 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    content       = "server.host: 0.0.0.0"
+    contents        = var.kibana_template
     destination   = "/tmp/kibana.yml"
 
     connection {
@@ -82,7 +82,7 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    content       = "http.host: 0.0.0.0"
+    content        = var.logstash_template
     destination   = "/tmp/logstash.yml"
 
     connection {
@@ -94,7 +94,7 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    source        = "${path.module}/filebeat.yml"
+    content        = var.filebeat_template
     destination   = "/tmp/filebeat.yml"
 
     connection {
@@ -106,7 +106,7 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    source        = "${path.module}/beats.conf"
+    source        = var.beats_template
     destination   = "/tmp/beats.conf"
 
     connection {
@@ -124,6 +124,4 @@ resource "aws_eip" "ip" {
   instance = aws_instance.elk.id
 }
 
-data "template_file" "installation_template" {
-  template = "${file("${path.module}/elasticsearch.tpl")}"
-}
+
