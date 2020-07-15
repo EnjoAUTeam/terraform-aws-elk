@@ -51,7 +51,7 @@ resource "aws_instance" "elk" {
   key_name      = var.key
   availability_zone = var.availability_zone
   vpc_security_group_ids = [
-    aws_security_group.allow_elk.id,
+    aws_security_group.allow_elk.id
   ]
   user_data = var.installation_template
   tags = {
@@ -70,7 +70,7 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    contents        = var.kibana_template
+    content        = var.kibana_template
     destination   = "/tmp/kibana.yml"
 
     connection {
@@ -106,9 +106,8 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    source        = var.beats_template
+    content        = var.beats_template
     destination   = "/tmp/beats.conf"
-
     connection {
       type        = "ssh"
       user        = "ubuntu"
