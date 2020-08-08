@@ -14,3 +14,7 @@ output "private_ip" {
   value       = aws_instance.elk.private_ip
   description = "Subject to change. Prefer to use DNS."
 }
+output "instance_id" {
+  value       = aws_instance.elk.id
+  description = "ELK Ec2 Instance ID"
+}
