@@ -19,9 +19,6 @@ variable "availability_zone" {
 variable "name" {
   description = "Name as set in AWS "
 }
-variable "logstash_template" {
-  description = "Logstash Template file - becomes /etc/logstash/logstash.yml"
-}
 variable "installation_template" {
   description = "Box Install Template file"
 }
@@ -30,9 +27,6 @@ variable "kibana_template" {
 }
 variable "filebeat_template" {
   description = "FileBeat Template file"
-}
-variable "beats_template" {
-  description = "Beats Template file"
 }
 variable "es_template" {
   description = "ES Template file"
