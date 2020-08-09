@@ -82,32 +82,9 @@ resource "aws_instance" "elk" {
   }
 
   provisioner "file" {
-    content        = var.logstash_template
-    destination   = "/tmp/logstash.yml"
-
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host     = self.public_ip
-      private_key =  var.private_key
-    }
-  }
-
-  provisioner "file" {
     content        = var.filebeat_template
     destination   = "/tmp/filebeat.yml"
 
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      host     = self.public_ip
-      private_key = var.private_key
-    }
-  }
-
-  provisioner "file" {
-    content        = var.beats_template
-    destination   = "/tmp/beats.conf"
     connection {
       type        = "ssh"
       user        = "ubuntu"
