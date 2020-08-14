@@ -1,6 +1,6 @@
 output "public_ip" {
-  value       = aws_eip.ip.public_ip
-  description = "Public IP. Can chancge. Pefer to use DNS"
+  value       = aws_instance.elk.public_ip
+  description = "Public IP. Can chnage. Prefer to use DNS"
 }
 output "public_dns" {
   value       = aws_instance.elk.public_dns

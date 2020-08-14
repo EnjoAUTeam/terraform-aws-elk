@@ -119,8 +119,5 @@ resource "aws_instance" "elk" {
   depends_on = [ aws_security_group.allow_elk ]
 }
 
-resource "aws_eip" "ip" {
-  instance = aws_instance.elk.id
-}
 
 
