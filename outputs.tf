@@ -18,3 +18,11 @@ output "instance_id" {
   value       = aws_instance.elk.id
   description = "ELK Ec2 Instance ID"
 }
+output "vpc_id" {
+  value       = var.vpc_id
+  description = "VPC this is attached to"
+}
+output "subnet_id" {
+  value       = var.subnet_id
+  description = "SUBNET this is attached to"
+}

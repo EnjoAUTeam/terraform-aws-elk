@@ -1,7 +1,7 @@
 resource "aws_security_group" "allow_elk" {
-  name = "allow_elk"
-  description = "All elasticsearch traffic"
-  #vpc_id = "${aws_vpc.main.id}"
+  name = "allow_elk-${var.name}"
+  description = "All elasticsearch traffic for ${var.name}"
+  vpc_id = var.vpc_id
 
   # elasticsearch port
   ingress {
@@ -42,7 +42,13 @@ resource "aws_security_group" "allow_elk" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
+  tags = {
+    Name = var.name
+    Type = "Backend"
+    Resource = "Elk"
+  }
+
 }
 
 resource "aws_instance" "elk" {
@@ -50,12 +56,16 @@ resource "aws_instance" "elk" {
   instance_type = var.TYPE
   key_name      = var.key
   availability_zone = var.availability_zone
+  associate_public_ip_address = true
+  subnet_id = var.subnet_id
   vpc_security_group_ids = [
     aws_security_group.allow_elk.id
   ]
   user_data = var.installation_template
   tags = {
     Name = var.name
+    Type = "Backend"
+    Resource = "Elk"
   }
   provisioner "file" {
     content        = var.es_template
@@ -118,6 +128,3 @@ resource "aws_instance" "elk" {
 
   depends_on = [ aws_security_group.allow_elk ]
 }
-
-
-

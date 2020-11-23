@@ -37,3 +37,9 @@ variable "beats_template" {
 variable "es_template" {
   description = "ES Template file"
 }
+variable "vpc_id" {
+  description = "VPC ID"
+}
+variable "subnet_id" {
+  description = "Subnet ID"
+}
